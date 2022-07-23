@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  # Serviço que irá rodar o node
+  node:
+    # Imagem base do container
+    image: node:16
+    # Nome do container para facilitar execução
+    container_name: desafio_xp
+    tty: true
+    stdin_open: true
+    # Substitui o comando padrão da imagem do node
+    command: bash
+    restart: always
+    working_dir: /app
+    volumes:
+      # dentro do diretório /app
+      - ./:/app
+    # Lista de serviços do qual este serviço depende
+    depends_on:
+      # Precisa do banco funcionando antes de subir o node
+      - db
+    ports:
+      # Expõe a porta padrão da aplicação: altere aqui caso use outra porta
+      - 5656:5656
+    # Configura as variáveis de ambiente dentro do container
+    environment:
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: db # Nome do service logo abaixo
+      DB_DATABASE: xp-db # Nome do banco onde irei armazenar as entidades
+      PORT: '5656'
+
+  # Serviço que irá rodar o banco de dados
+  db:
+    container_name: desafio_xp_db
+    image: mysql:5.7
+    restart: always
+    
+    volumes:
+      # Setup inicial, apenas para criar o Database com o nome esperado na aplicação
+      - .docker/init.sql:/data/application/init.sql
+      # Não perder os dados do banco ao derrubar o container
+      - db-data:/var/lib/mysql/
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: xp-db
+    ports:
+      - 3306:3306
+
+networks:
+  # Rede padrão, criada automaticamente
+  default:
+    # Dá um nome específico à rede padrão
+    name: desafio_xp_net
+
+volumes:
+ db-data:
