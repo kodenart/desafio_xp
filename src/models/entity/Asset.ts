@@ -1,9 +1,9 @@
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 import { AssetToClient } from "./AssetToClient";
 import { Operation } from "./Operation";
 
 @Entity()
-export class Asset {
+export class Asset extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -11,7 +11,7 @@ export class Asset {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ type: "decimal", scale: 2, precision: 12 })
     price: number;
 
     @OneToMany(

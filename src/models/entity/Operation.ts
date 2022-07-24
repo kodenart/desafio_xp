@@ -1,16 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Asset } from "./Asset";
 import { Client } from "./Client";
-
-export enum OperationType {
-  // eslint-disable-next-line no-unused-vars
-  PURCHASE = "purchase",
-  // eslint-disable-next-line no-unused-vars
-  SELL = "sell"
-}
+import { OperationType } from "../../interfaces/Operation";
 
 @Entity()
-export class Operation {
+export class Operation extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,5 +21,8 @@ export class Operation {
 
   @Column()
   amount: number;
+
+  @CreateDateColumn()
+  created_at: Date;
 
 }
