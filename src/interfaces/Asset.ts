@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // export interface IAssetOperation {
 
 import { Asset } from "../models/entity";
@@ -16,15 +17,13 @@ export interface IAssetInfo {
   amount: number;
 }
 
-export interface IAssetService {
-  add(assetInfo: IAssetInfo)
-  buy(purchaseInfo: IExchange);
-  sell(sellInfo: IExchange);
-}
-
 export interface IAssetModel {
   create(assetInfo: IAssetInfo): Promise<void>
   findById(id: number): Promise<Asset>
-  addAmount(id: number, amount: number): Promise<number>
-  subAmount(id: number, amount: number): Promise<number>
+  // addAmount(id: number, amount: number): Promise<number>
+  // subAmount(id: number, amount: number): Promise<number>
+}
+
+export interface IAssetService {
+  getAssetByClient(id: number)
 }
