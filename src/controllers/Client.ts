@@ -9,7 +9,7 @@ class ClientController {
   async create(req: Request, res: Response): Promise<Response> {
     const { name, email, password, balance } = req.body;
     const token = await ClientService.create({ name, email, password, balance });    
-    return res.status(StatusCodes.OK).json({ token });
+    return res.status(StatusCodes.CREATED).json({ token });
   }
 
   async deposit(req: Request, res: Response): Promise<Response> {
@@ -35,19 +35,14 @@ class ClientController {
   async clientBalance(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const balance = await ClientService.retrieveBalance(Number(id));
-    if(!balance) {
-      return res.status(StatusCodes.NOT_FOUND).json({message: 'Cliente não encontrado'});
-    }
+    console.log(balance);
 
     return res.status(StatusCodes.OK).json({CodCliente: balance.id, Saldo: balance.balance});
   }
 
   async transactionHistory(req: Request, res: Response): Promise<Response> {
-    const { CodCliente } = req.body;
-    const history = await ClientService.transactionHistory(CodCliente);
-    if(history.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).json({message: 'Cliente não encontrado'});
-    }
+    const { id } = req.params;
+    const history = await ClientService.transactionHistory(Number(id));
 
     return res.status(StatusCodes.OK).json({ history });
 
