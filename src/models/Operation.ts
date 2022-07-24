@@ -6,6 +6,35 @@ class OperationModel implements IOperationModel {
     const newOp = Operation.create({client, asset, type, amount});
     await newOp.save();
   }
+  public async byAsset(asset_id: number) {
+    const operations = await Operation.find({ 
+      relations: {
+        client: true,
+        asset: true,
+      },
+      where: { 
+        asset: {
+          id: asset_id
+        }
+      }
+    });
+    return operations;
+  }
+
+  public async byClient(client_id: number) {
+    const operations = await Operation.find({ 
+      relations: {
+        client: true,
+        asset: true,
+      },
+      where: { 
+        client: {
+          id: client_id
+        }
+      }
+    });
+    return operations;
+  }
 }
 
 export default new OperationModel();
