@@ -4,7 +4,7 @@ module.exports = {
         "es2021": true
     },
     "extends": [
-        "eslint:recommended",
+        // "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -16,7 +16,7 @@ module.exports = {
         "@typescript-eslint",
     ],
     "rules": {
-        "no-unused-vars": ["warn", { "argsIgnorePattern": "next" }],
+        "no-unused-vars": ["warn"],
         "no-console": "off",
         "func-names": "off",
         "semi": [2, "always"]
