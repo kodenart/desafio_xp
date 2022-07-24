@@ -54,6 +54,42 @@ class OperationService implements IOperationService{
     await AssetToClientModel.sell(client, asset, amount);
     await OperationModel.add(client, asset, amount, OperationType.SELL);
   }
+
+  public async assetHistory(asset_id: number) {
+    const operations = await OperationModel.byAsset(asset_id);
+    if(operations.length === 0) {
+      throw new HttpError('Ativo inexistente.', StatusCodes.NOT_FOUND);
+    }
+
+    const mappedOperations = operations
+      .map((elem) => ({
+        CodCliente: elem.client.id,
+        CodAtivo: elem.asset.id,
+        Tipo: elem.type === 'purchase' ? 'compra' : 'venda',
+        QtdeAtivo: elem.amount,
+        Data: elem.created_at,
+      }));
+    return mappedOperations;
+  }
+
+  public async clientHistory(client_id: number) {
+    const operations = await OperationModel.byClient(client_id);
+    if(operations.length === 0) {
+      throw new HttpError(
+        'O cliente especificado nunca operou ou é inexistente.',
+        StatusCodes.NOT_FOUND
+      );
+    }
+
+    const mappedOperations = operations
+      .map((elem) => ({
+        CodAtivo: elem.asset.id,
+        Tipo: elem.type === 'purchase' ? 'compra' : 'venda',
+        QtdeAtivo: elem.amount,
+        Data: elem.created_at,
+      }));
+    return mappedOperations;
+  }
 }
 
 export default new OperationService();

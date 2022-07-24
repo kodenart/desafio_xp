@@ -1,9 +1,10 @@
-import { IClientService, IClientTransaction, ICreateClient, Token } from "../interfaces/Client";
+import { IClientService, IClientTransaction, ICreateClient, IHistoryTransactions, Token } from "../interfaces/Client";
 import ClientModel from '../models/Client';
 import TransactionModel from "../models/Transaction";
 import { HttpError } from "../utils/HttpError";
 import { StatusCodes } from "http-status-codes";
 import { generateToken } from "../utils/generateToken";
+import { Transaction } from "../models/entity";
 //  implements IClientService
 class ClientService implements IClientService{
   async create(client: ICreateClient): Promise<Token> {
@@ -32,7 +33,7 @@ class ClientService implements IClientService{
     // new transaction
     await TransactionModel.create({client, type, amount});
     // updates the client balance on DB
-    client.save();
+    await client.save();
     return client.balance;
   }
 
@@ -51,19 +52,31 @@ class ClientService implements IClientService{
     // new transaction
     await TransactionModel.create({client, type, amount});
     // updates the client balance on DB
-    client.save();
+    await client.save();
     return client.balance;
   }
 
   // all transactions made by a specific client
-  public async transactionHistory(id: number) {
+  public async transactionHistory(id: number): Promise<IHistoryTransactions[]|Transaction[]> {
     const transactionArr = await TransactionModel.getByClientId(id);
-    return transactionArr;
+    if(transactionArr.length === 0) {
+      throw new HttpError('Histórico não encontrado', StatusCodes.NOT_FOUND);
+    } 
+    
+    const mappedArr = transactionArr
+      .map((elem) => ({ 
+        CodCliente: id,
+        Transacao: elem.type,  
+        Valor: elem.amount,
+        Data: elem.created_at,
+      }));
+    return mappedArr;
   }
 
 
   public async retrieveBalance(id: number) {
     const client = await ClientModel.findById(id);
+    if(!client) throw new HttpError('Cliente não encontrado', StatusCodes.NOT_FOUND);
     return { id, balance: client.balance };
   }
 
