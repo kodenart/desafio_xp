@@ -18,7 +18,7 @@ export class Client extends BaseEntity{
     @Column()
     password: string;
 
-    @Column({type: 'numeric'})
+    @Column({type: "decimal", scale: 2, precision: 12, default: 0.00})
     balance: number;
 
     @OneToMany(

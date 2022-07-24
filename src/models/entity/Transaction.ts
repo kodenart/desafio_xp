@@ -1,15 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, BaseEntity, CreateDateColumn } from "typeorm";
+import { TransactionTypes } from "../../interfaces/Transaction";
 import { Client } from "./Client";
 
-export enum TransactionTypes {
-  // eslint-disable-next-line no-unused-vars
-  DEPOSIT = 'deposit',
-  // eslint-disable-next-line no-unused-vars
-  WITHDRAW = 'withdraw'
-}
+
 
 @Entity()
-export class Transaction {
+export class Transaction extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;  
@@ -17,7 +13,7 @@ export class Transaction {
     @Column({ type: "enum", enum: TransactionTypes})
     type: string;
 
-    @Column({ type: 'numeric'})
+    @Column({ type: 'decimal', scale: 2, precision: 12 })
     amount: number;
 
     @ManyToOne(
@@ -31,5 +27,7 @@ export class Transaction {
 
     client: Client;
 
+    @CreateDateColumn()
+    created_at: Date;
 }
 
