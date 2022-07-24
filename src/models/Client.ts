@@ -10,13 +10,13 @@ class ClientModel {
   } 
 
   public async findById(id: number): Promise<Client> {
-    const user = await Client.findOne({ where: { id }});
-    return user;
+    const client = await Client.findOne({ where: { id }});
+    return client;
   }
 
   public async findByEmail(email: string): Promise<Client> {
-    const user = await Client.findOne({ where: { email }});
-    return user;
+    const client = await Client.findOne({ where: { email }});
+    return client;
   }
 
 }
