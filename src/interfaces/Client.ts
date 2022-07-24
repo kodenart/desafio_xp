@@ -1,4 +1,4 @@
-import { Transaction } from "../models/entity";
+import { Client, Transaction } from "../models/entity";
 import { TransactionTypes } from "./Transaction";
 
 /* eslint-disable no-unused-vars */
@@ -16,12 +16,18 @@ export interface IClient extends ICreateClient {
   id: number
 }
 
+export interface IHistoryTransactions {
+  CodCliente: number;
+  Transacao: string;
+  Valor: number;
+  Data: Date;
+}
 
 export interface IClientService {
   create(client: ICreateClient): Promise<Token>;
   deposit(depositInfo: IClientTransaction): Promise<number>;
   withdraw(withdrawInfo: IClientTransaction): Promise<number>;
-  transactionHistory(id: number): Promise<Transaction[]>;
+  transactionHistory(id: number): Promise<IHistoryTransactions[] | Transaction[]>;
 }
 
 export interface IClientTransaction {
