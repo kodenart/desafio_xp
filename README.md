@@ -46,6 +46,6 @@ funcionalidades de conta digital.
 - [TypeScript](https://www.typescriptlang.org/)
 - [TypeORM](https://www.typeorm.io/)
 - [MySQL](https://www.mysql.com/)
-- [Jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+- [JWT](https://www.npmjs.com/package/jsonwebtoken)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [Docker](https://www.docker.com/)
