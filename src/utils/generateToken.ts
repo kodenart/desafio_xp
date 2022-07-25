@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 
-const JWT_SECRET = 'super secret key =)';
+export const JWT_SECRET = process.env.JWT_SECRET || 'super secret key =)';
 
 const config: SignOptions = {
   expiresIn: '7d',
