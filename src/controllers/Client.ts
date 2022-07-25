@@ -8,12 +8,14 @@ class ClientController {
 
   async create(req: Request, res: Response): Promise<Response> {
     const { name, email, password, balance } = req.body;
+    
     const token = await ClientService.create({ name, email, password, balance });    
     return res.status(StatusCodes.CREATED).json({ token });
   }
 
   async deposit(req: Request, res: Response): Promise<Response> {
     const { CodCliente, Valor } = req.body;
+    
     const novoSaldo = await ClientService.deposit({
       id: CodCliente,
       amount: Valor,
@@ -35,8 +37,6 @@ class ClientController {
   async clientBalance(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const balance = await ClientService.retrieveBalance(Number(id));
-    console.log(balance);
-
     return res.status(StatusCodes.OK).json({CodCliente: balance.id, Saldo: balance.balance});
   }
 

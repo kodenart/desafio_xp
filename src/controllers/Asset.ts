@@ -15,6 +15,11 @@ class AssetController {
     return res.status(StatusCodes.OK).json({ ...asset });
   }
 
+  public async fetchAll(req: Request, res: Response){
+    const assets = await AssetService.getAllAssets();
+    return res.status(200).json({ ...assets });
+  }
+
 }
 
 export default new AssetController();
