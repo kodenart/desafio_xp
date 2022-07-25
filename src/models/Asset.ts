@@ -11,6 +11,11 @@ class AssetModel implements IAssetModel {
     const asset = await Asset.findOne({ where: { id }});
     return asset;
   }
+
+  public async findAll(): Promise<Asset[]> {
+    const assets = await Asset.find();
+    return assets;
+  }
 }
 
 export default new AssetModel();
