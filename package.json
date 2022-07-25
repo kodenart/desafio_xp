@@ -5,6 +5,7 @@
    "main": "index.js",
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
+      "pre-start-populate-db": "ts-node src/models/seeds/index.ts",
       "start": "tsc src/index.ts && node build/index.ts",
       "dev": "ts-node-dev src/server.ts",
       "typeorm": "typeorm-ts-node-commonjs",
@@ -14,9 +15,11 @@
    "author": "mjuanvitorp@gmail.com",
    "license": "ISC",
    "dependencies": {
+      "bcrypt": "^5.0.1",
       "cors": "^2.8.5",
       "dotenv": "^16.0.1",
       "express": "^4.18.1",
+      "express-async-errors": "^3.1.1",
       "http-status-codes": "^2.2.0",
       "joi": "^17.6.0",
       "jsonwebtoken": "^8.5.1",
@@ -26,6 +29,7 @@
       "uuid": "^8.3.2"
    },
    "devDependencies": {
+      "@types/bcrypt": "^5.0.0",
       "@types/express": "^4.17.13",
       "@types/jsonwebtoken": "^8.5.8",
       "@types/node": "^16.11.45",
