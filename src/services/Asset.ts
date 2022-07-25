@@ -23,6 +23,13 @@ class AssetService implements IAssetService {
     if(!asset) throw new HttpError('Ativo não encontrado', StatusCodes.NOT_FOUND);
     return { CodAtivo: asset.id, QtdeAtivo: asset.amount, Valor: asset.price };
   }
+
+  async getAllAssets() {
+    const assets = await AssetModel.findAll();
+    return assets;
+  }
+
+
 }
 
 export default new AssetService();

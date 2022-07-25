@@ -5,20 +5,26 @@ import { HttpError } from "../utils/HttpError";
 import { StatusCodes } from "http-status-codes";
 import { generateToken } from "../utils/generateToken";
 import { Transaction } from "../models/entity";
+import bcrypt from 'bcrypt';
+
 //  implements IClientService
 class ClientService implements IClientService{
   async create(client: ICreateClient): Promise<Token> {
-    const { email, name } = client;
+    const { email, name, password } = client;
     const emailExists = await ClientModel.findByEmail(email);
 
-    if(emailExists.email === email) {
+    if(emailExists) {
       throw new HttpError(
         'Email já cadastrado, por favor, utilize outro.',
         StatusCodes.CONFLICT
       );
     } 
+
+    // keeping the password safe
+    const salt = bcrypt.genSaltSync(5);
+    const hashedPassword = bcrypt.hashSync(password, salt);
     
-    await ClientModel.create(client);
+    await ClientModel.create({ ...client, password: hashedPassword });
 
     const token = generateToken({ email, name });
     return token;

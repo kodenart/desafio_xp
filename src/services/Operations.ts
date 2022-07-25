@@ -12,6 +12,8 @@ class OperationService implements IOperationService{
     const client = await ClientModel.findById(client_id);
     const asset = await AssetModel.findById(asset_id);
 
+    if(!asset) throw new HttpError('Ativo inexistente.', StatusCodes.NOT_FOUND);
+
     const totalPrice = Number(asset.price) * amount;
     const possibleAmount = Number(asset.amount);
     
@@ -36,6 +38,8 @@ class OperationService implements IOperationService{
     const client = await ClientModel.findById(client_id);
     const asset = await AssetModel.findById(asset_id);
     const relationship = await AssetToClientModel.findRelationship(client, asset);
+
+    if(!asset) throw new HttpError('Ativo inexistente.', StatusCodes.NOT_FOUND);
 
     if(!relationship) {
       throw new HttpError(
