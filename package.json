@@ -5,8 +5,10 @@
    "main": "index.js",
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "pre-start-populate-db": "ts-node src/models/seeds/index.ts",
-      "start": "tsc src/index.ts && node build/index.ts",
+      "setup": "npm run build && npm run db-populate",
+      "build": "tsc",
+      "db-populate": "node build/models/seeds/index.js",
+      "start": "node build/server.js",
       "dev": "ts-node-dev src/server.ts",
       "typeorm": "typeorm-ts-node-commonjs",
       "lint": "eslint ./src/. --ext .ts"
